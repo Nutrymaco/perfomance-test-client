@@ -25,12 +25,13 @@ public class Client {
 
         for (int i = 0; i < THREAD_COUNT; i++) {
             pool.submit(() -> {
-                stub.getResult(
+                var result = stub.getResult(
                         AlgorithmRequest.newBuilder()
                                 .setString1("egerg")
                                 .setString2("ger")
                                 .build()
                 );
+                System.out.println("response : " + result);
                 try {
                     Thread.sleep(TIME_OUT);
                 } catch (InterruptedException e) {
