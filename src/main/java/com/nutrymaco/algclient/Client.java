@@ -25,7 +25,7 @@ public class Client {
                         new RequestSenderImpl(
                                 new ServerResultWithDelay(
                                         new ServerResultImpl(channel,
-                                                new RandomServerRequest(20)),
+                                                new RandomServerRequest(2000)),
                                         DELAY
                                 ))
                 ),
