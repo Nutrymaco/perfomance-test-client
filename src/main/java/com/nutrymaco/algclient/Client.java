@@ -1,44 +1,35 @@
 package com.nutrymaco.algclient;
 
-import com.nutrymaco.alg.AlgorithmRequest;
-import com.nutrymaco.alg.AlgorithmServiceGrpc;
+import com.nutrymaco.algclient.request.RandomServerRequest;
+import com.nutrymaco.algclient.result.MockServerResult;
+import com.nutrymaco.algclient.result.ServerResultImpl;
+import com.nutrymaco.algclient.result.ServerResultWithDelay;
+import com.nutrymaco.algclient.sender.AsyncRequestSenderImpl;
+import com.nutrymaco.algclient.sender.RequestSenderImpl;
+import com.nutrymaco.algclient.sender.RequestSenderWithLog;
 import io.grpc.netty.NettyChannelBuilder;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 public class Client {
-    private final static int THREAD_COUNT = 10;
-    private final static int TIME_OUT = 100;
+    private final static int CONCURRENCY = 20;
+    private final static int DELAY = 100;
+    private final static String HOST = "192.168.84.123";
 
     public static void main(String[] args) throws InterruptedException {
         final var channel = NettyChannelBuilder
-                .forAddress("localhost", 8080)
+                .forAddress(HOST, 8080)
                 .usePlaintext()
                 .build();
 
-        final var stub =
-                AlgorithmServiceGrpc.newBlockingStub(channel);
-
-        final var pool = Executors.newFixedThreadPool(THREAD_COUNT);
-
-        for (int i = 0; i < THREAD_COUNT; i++) {
-            pool.submit(() -> {
-                var result = stub.getResult(
-                        AlgorithmRequest.newBuilder()
-                                .setString1("egerg")
-                                .setString2("ger")
-                                .build()
-                );
-                System.out.println("response : " + result);
-                try {
-                    Thread.sleep(TIME_OUT);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        pool.awaitTermination(1, TimeUnit.MINUTES);
+        new AsyncRequestSenderImpl(
+                new RequestSenderWithLog(
+                        new RequestSenderImpl(
+                                new ServerResultWithDelay(
+                                        new ServerResultImpl(channel,
+                                                new RandomServerRequest(20)),
+                                        DELAY
+                                ))
+                ),
+                CONCURRENCY
+        ).sendRequest();
     }
 }
