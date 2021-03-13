@@ -19,12 +19,16 @@ public class AsyncTaskExecutor {
         this.concurrency = concurrency;
     }
 
-    public void execute() {
+    public void execute() throws InterruptedException {
         var executor = Executors.newFixedThreadPool(concurrency);
         while (!taskManager.isEnd()) {
             var task = taskManager.getTask();
             executor.submit(task);
         }
         executor.shutdown();
+        while (!executor.isTerminated()) {
+
+        }
+        executor.shutdownNow();
     }
 }

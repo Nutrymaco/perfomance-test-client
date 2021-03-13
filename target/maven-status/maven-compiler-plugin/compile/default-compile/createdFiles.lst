@@ -16,6 +16,7 @@ com/nutrymaco/algclient/result/ServerResult.class
 com/nutrymaco/algclient/result/ServerResultWithTimeout.class
 com/nutrymaco/algclient/result/ServerProvider$1.class
 com/nutrymaco/alg/Service$1.class
+com/nutrymaco/algclient/task/AsyncTaskExecutorWithTimePrint.class
 com/nutrymaco/alg/AlgorithmResponse.class
 com/nutrymaco/algclient/task/TaskManager.class
 com/nutrymaco/algclient/Client.class
