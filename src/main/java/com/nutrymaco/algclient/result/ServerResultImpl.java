@@ -1,22 +1,24 @@
 package com.nutrymaco.algclient.result;
 
+import com.nutrymaco.alg.AlgorithmRequest;
 import com.nutrymaco.alg.AlgorithmResponse;
-import com.nutrymaco.alg.AlgorithmServiceGrpc;
+import com.nutrymaco.alg.ApacheAlgorithmServiceGrpc;
 import com.nutrymaco.algclient.request.ServerRequest;
 import io.grpc.Channel;
 
+import java.util.function.Function;
+
 public class ServerResultImpl implements ServerResult {
-    private final AlgorithmServiceGrpc.AlgorithmServiceBlockingStub stub;
+    private final Function<AlgorithmRequest, AlgorithmResponse> server;
     private final ServerRequest serverRequest;
 
-    public ServerResultImpl(Channel channel, ServerRequest serverRequest) {
-        // тут будет выбор апи
-        stub = AlgorithmServiceGrpc.newBlockingStub(channel);
+    public ServerResultImpl(ServerProvider serverProvider, ServerRequest serverRequest) {
+        this.server = serverProvider.getServer();
         this.serverRequest = serverRequest;
     }
 
     public AlgorithmResponse getResult() {
-        return stub.getResult(serverRequest.getRequest());
+        return server.apply(serverRequest.getRequest());
     }
 
     @Override

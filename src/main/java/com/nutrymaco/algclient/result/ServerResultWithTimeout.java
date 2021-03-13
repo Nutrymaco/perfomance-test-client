@@ -19,13 +19,26 @@ public class ServerResultWithTimeout implements ServerResult {
 
     @Override
     public AlgorithmResponse getResult() {
-        var future =
-                ListenableFutureTask.create(serverResult::getResult);
+        var runnable = new Runnable() {
+            AlgorithmResponse response;
+
+            @Override
+            public void run() {
+                response = serverResult.getResult();
+            }
+
+            public AlgorithmResponse getResponse() {
+                return response;
+            }
+        };
+        var thread = new Thread(runnable);
+        thread.start();
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            return null;
+            thread.join(timeout);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("timeout exceeded");
         }
+        return runnable.getResponse();
     }
 
     @Override

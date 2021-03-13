@@ -4,22 +4,14 @@ import com.nutrymaco.alg.AlgorithmRequest;
 import com.nutrymaco.algclient.request.ServerRequest;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RandomServerRequest implements ServerRequest {
 
-    private int count;
     private final Random random = new Random();
-
-    public RandomServerRequest(int count) {
-        this.count = count;
-    }
 
     @Override
     public AlgorithmRequest getRequest() {
-        if (isEnd()) {
-            throw new IndexOutOfBoundsException();
-        }
-        count--;
         return AlgorithmRequest.newBuilder()
                 .setString1(String.valueOf(random.nextFloat()))
                 .setString2(String.valueOf(random.nextFloat()))
@@ -28,6 +20,6 @@ public class RandomServerRequest implements ServerRequest {
 
     @Override
     synchronized public boolean isEnd() {
-        return count == 0;
+        return false;
     }
 }

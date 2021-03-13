@@ -36,10 +36,13 @@ public final class Service {
       "\n\rservice.proto\022\021com.nutrymaco.alg\"4\n\020Al" +
       "gorithmRequest\022\017\n\007string1\030\001 \001(\t\022\017\n\007strin" +
       "g2\030\002 \001(\t\"#\n\021AlgorithmResponse\022\016\n\006result\030" +
-      "\001 \001(\0052j\n\020AlgorithmService\022V\n\tGetResult\022#" +
-      ".com.nutrymaco.alg.AlgorithmRequest\032$.co" +
-      "m.nutrymaco.alg.AlgorithmResponseB\002P\001b\006p" +
-      "roto3"
+      "\001 \001(\0052p\n\026ApacheAlgorithmService\022V\n\tGetRe" +
+      "sult\022#.com.nutrymaco.alg.AlgorithmReques" +
+      "t\032$.com.nutrymaco.alg.AlgorithmResponse2" +
+      "q\n\027DebattyAlgorithmService\022V\n\tGetResult\022" +
+      "#.com.nutrymaco.alg.AlgorithmRequest\032$.c" +
+      "om.nutrymaco.alg.AlgorithmResponseB\002P\001b\006" +
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

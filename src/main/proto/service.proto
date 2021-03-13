@@ -3,7 +3,11 @@ syntax = 'proto3';
 option java_multiple_files = true;
 package com.nutrymaco.alg;
 
-service AlgorithmService {
+service ApacheAlgorithmService {
+  rpc GetResult(AlgorithmRequest) returns (AlgorithmResponse);
+}
+
+service DebattyAlgorithmService {
   rpc GetResult(AlgorithmRequest) returns (AlgorithmResponse);
 }
 
